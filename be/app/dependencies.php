@@ -8,6 +8,7 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -25,5 +26,17 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+        Capsule::class => function (ContainerInterface $c): Capsule {
+        /** @var SettingsInterface $settings */
+        $settings = $c->get(SettingsInterface::class);
+        $db = $settings->get('db');
+
+        $capsule = new Capsule;
+        $capsule->addConnection($db);
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+
+        return $capsule;
+    },
     ]);
 };
