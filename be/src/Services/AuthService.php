@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\DTO\UserDTO;
 use App\Repositories\UserRepository;
+
 class AuthService {
     protected UserRepository $userRepo;
 
@@ -16,8 +17,8 @@ class AuthService {
     public function login(string $email, string $password): ?UserDTO {
         $user = $this->userRepo->findByEmail($email);
         if (!$user) return null;
-print_r($password);
-        if (!password_verify($password, $user->password_hash)) {
+        $hash = md5($password);
+        if ($user->password_hash!= $hash) {
             return null;
         }
 
