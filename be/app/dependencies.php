@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
@@ -8,7 +9,27 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-use Illuminate\Database\Capsule\Manager as Capsule;
+
+function registerClassesFromFolder(DI\ContainerBuilder $containerBuilder, string $folder, string $namespacePrefix) {
+    $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($folder));
+    foreach ($files as $file) {
+        if ($file->isFile() && $file->getExtension() === 'php') {
+            // Lấy path tương đối so với folder
+            $relativePath = substr($file->getRealPath(), strlen($folder) + 1); // +1 để bỏ dấu /
+            // Đổi dấu / hoặc \ thành namespace separator \
+            $classPath = str_replace(['/', '\\'], '\\', $relativePath);
+            // Bỏ đuôi .php
+            $className = $namespacePrefix . '\\' . substr($classPath, 0, -4);
+
+            if (class_exists($className)) {
+                $containerBuilder->addDefinitions([
+                    $className => DI\autowire(),
+                ]);
+            }
+        }
+    }
+}
+
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -26,17 +47,25 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
-        Capsule::class => function (ContainerInterface $c): Capsule {
-        /** @var SettingsInterface $settings */
-        $settings = $c->get(SettingsInterface::class);
-        $db = $settings->get('db');
+        // DB Connect
+            PDO::class => function (ContainerInterface $c) {
+            $settings = $c->get(SettingsInterface::class)->get('db');
 
-        $capsule = new Capsule;
-        $capsule->addConnection($db);
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
+            $dsn = "mysql:host={$settings['host']};dbname={$settings['dbname']};charset={$settings['charset']}";
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ];
 
-        return $capsule;
-    },
+            return new PDO($dsn, $settings['user'], $settings['pass'], $options);
+        },
+        
+       
+        
     ]);
+    //Đăng ký
+    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Services', 'App\Service');
+    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Repositories', 'App\Repository');
+    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Controllers', 'App\Controller');
+
 };

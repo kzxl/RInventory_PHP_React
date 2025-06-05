@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Application\Settings\Settings;
@@ -20,16 +21,14 @@ return function (ContainerBuilder $containerBuilder) {
                     'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
                     'level' => Logger::DEBUG,
                 ],
-                'db'=>[
-                    'driver' => 'mysql',
-                    'host' => '127.0.0.1',
-                    'database' => 'mydb',
-                    'username' => 'root',
-                    'password' => '',
-                    'charset' => 'utf8',
-                    'collation' => 'utf8_unicode_ci',
-                    'prefix' => '',
+                'db' => [
+                    'host'    => 'localhost',
+                    'dbname'  => 'inventory',
+                    'user'    => 'root',
+                    'pass'    => '',
+                    'charset' => 'utf8mb4',
                 ]
+                
             ]);
         }
     ]);

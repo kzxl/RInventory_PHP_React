@@ -1,19 +1,26 @@
+<?php
 namespace App\Services;
 
+use App\DTO\UserDTO;
 use App\Repositories\UserRepository;
-
 class AuthService {
-    protected $userRepo;
+    protected UserRepository $userRepo;
 
     public function __construct(UserRepository $userRepo) {
         $this->userRepo = $userRepo;
     }
 
-    public function checkLogin($username, $password) {
-        $user = $this->userRepo->findByUsername($username);
-        if ($user && password_verify($password, $user->password)) {
-            return true;
+    /**
+     * Trả về UserDTO nếu login thành công, hoặc null nếu thất bại
+     */
+    public function login(string $email, string $password): ?UserDTO {
+        $user = $this->userRepo->findByEmail($email);
+        if (!$user) return null;
+print_r($password);
+        if (!password_verify($password, $user->password_hash)) {
+            return null;
         }
-        return false;
+
+        return $user;
     }
 }
