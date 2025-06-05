@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;

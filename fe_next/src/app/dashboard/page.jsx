@@ -8,7 +8,7 @@ function checkAuth() {
 
 export default function DashboardPage() {
   if (!checkAuth()) {
-    redirect("/login"); // Nếu chưa đăng nhập, redirect về login
+    //redirect("/login"); 
   }
 
   return <h2>Dashboard - Protected Page</h2>;

@@ -8,7 +8,7 @@ export default function Home() {
 
   if (!token) {
     // Chưa đăng nhập, redirect tới /login
-    redirect("/login");
+    redirect("/dashboard");
   } else {
     // Đã đăng nhập, redirect tới /dashboard
     redirect("/dashboard");

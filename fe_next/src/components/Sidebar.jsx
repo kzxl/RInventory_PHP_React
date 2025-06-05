@@ -1,0 +1,40 @@
+// Sidebar.jsx
+'use client'
+
+import { Menu } from 'antd'
+import {
+  DashboardOutlined,
+  BoxPlotOutlined,
+  ShoppingOutlined,
+  FileTextOutlined,
+  SettingOutlined,
+} from '@ant-design/icons'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const navItems = [
+  { key: '/', icon: <DashboardOutlined />, label: 'Tổng quan' },
+  { key: '/san-pham', icon: <BoxPlotOutlined />, label: 'Sản phẩm' },
+  { key: '/nhap-kho', icon: <ShoppingOutlined />, label: 'Nhập kho' },
+  { key: '/xuat-kho', icon: <ShoppingOutlined />, label: 'Xuất kho' },
+  { key: '/bao-cao', icon: <FileTextOutlined />, label: 'Báo cáo' },
+  { key: '/cai-dat', icon: <SettingOutlined />, label: 'Cài đặt' },
+]
+
+export default function Sidebar({ collapsed }) {
+  const pathname = usePathname()
+
+  return (
+    <Menu
+      theme="dark"
+      mode="inline"
+      selectedKeys={[pathname]}
+      inlineCollapsed={collapsed}
+      items={navItems.map(({ key, icon, label }) => ({
+        key,
+        icon,
+        label: <Link href={key}>{label}</Link>,
+      }))}
+    />
+  )
+}

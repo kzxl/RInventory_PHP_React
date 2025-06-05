@@ -17,8 +17,7 @@ class AuthService {
     public function login(string $email, string $password): ?UserDTO {
         $user = $this->userRepo->findByEmail($email);
         if (!$user) return null;
-        $hash = md5($password);
-        if ($user->password_hash!= $hash) {
+        if ($user->password_hash!= $password) {
             return null;
         }
 

@@ -47,9 +47,4 @@ class AuthController
         return $response;
     }
 
-    public function hello(Request $request, Response $response): Response
-    {
-        $response->getBody()->write("Hello from Slim!");
-        return $response;
-    }
 }
