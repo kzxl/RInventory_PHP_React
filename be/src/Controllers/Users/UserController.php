@@ -13,7 +13,7 @@ class UserController
     public function __construct(UserService $userService){
         $this->userService = $userService;
     }
-    public function postFindAll(Request $request, Response $response, array $args): Response{
+    public function findAll(Request $request, Response $response, array $args): Response{
         $users = $this->userService->findAll();
         if(!$users){
             return ResponseHelper::error($response, 'Không tìm thấy user', 404);
@@ -22,7 +22,7 @@ class UserController
         'user' => $users
         ]);
     }
-    public function postFindById(Request $request, Response $response, array $args): Response {
+    public function find(Request $request, Response $response, array $args): Response {
     $params = $request->getParsedBody();
     $user = UserDTO::fromArrayWithMap( $this->userService->findById($params['id']),['full_name'=>'name']);
 
@@ -35,7 +35,7 @@ class UserController
     ]);
 }
 
-    public function postCreate (Request $request, Response $response):Response {
+    public function create (Request $request, Response $response):Response {
 
         $params = $request->getParsedBody();
         // Validate đơn giản
@@ -57,7 +57,7 @@ class UserController
 
          return ResponseHelper::success($response, 'Tạo user thành công', [], 201);
     }
-    public function postUpdate(Request $request, Response $response, array $args): Response {
+    public function update(Request $request, Response $response, array $args): Response {
     try{
     $id = (int)$args['id'];
     $params = $request->getParsedBody();
@@ -68,7 +68,7 @@ class UserController
 }
 
 }
-    public function postDelete(Request $request, Response $response, array $args): Response {
+    public function delete(Request $request, Response $response, array $args): Response {
         $id = (int) $args['id'];
 
         $user = $this->userService->findById($id);

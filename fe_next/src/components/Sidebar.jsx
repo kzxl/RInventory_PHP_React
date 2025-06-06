@@ -1,28 +1,29 @@
 // Sidebar.jsx
-'use client'
+"use client";
 
-import { Menu } from 'antd'
+import { Menu } from "antd";
 import {
   DashboardOutlined,
   BoxPlotOutlined,
   ShoppingOutlined,
   FileTextOutlined,
   SettingOutlined,
-} from '@ant-design/icons'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+} from "@ant-design/icons";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navItems = [
-  { key: '/', icon: <DashboardOutlined />, label: 'Tổng quan' },
-  { key: '/san-pham', icon: <BoxPlotOutlined />, label: 'Sản phẩm' },
-  { key: '/nhap-kho', icon: <ShoppingOutlined />, label: 'Nhập kho' },
-  { key: '/xuat-kho', icon: <ShoppingOutlined />, label: 'Xuất kho' },
-  { key: '/bao-cao', icon: <FileTextOutlined />, label: 'Báo cáo' },
-  { key: '/cai-dat', icon: <SettingOutlined />, label: 'Cài đặt' },
-]
+  { key: "/", icon: <DashboardOutlined />, label: "Tổng quan" },
+  { key: "/customer", icon: <DashboardOutlined />, label: "Khách hàng" },
+  { key: "/product", icon: <BoxPlotOutlined />, label: "Sản phẩm" },
+  { key: "/nha", icon: <ShoppingOutlined />, label: "Nhập kho" },
+  { key: "/xuat-kho", icon: <ShoppingOutlined />, label: "Xuất kho" },
+  { key: "/report", icon: <FileTextOutlined />, label: "Báo cáo" },
+  { key: "/setting", icon: <SettingOutlined />, label: "Cài đặt" },
+];
 
 export default function Sidebar({ collapsed }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <Menu
@@ -36,5 +37,5 @@ export default function Sidebar({ collapsed }) {
         label: <Link href={key}>{label}</Link>,
       }))}
     />
-  )
+  );
 }

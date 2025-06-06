@@ -12,11 +12,11 @@ return function (App $app) {
        
     });
     $app->group('/api/user', function ($group) {
-        $group->post('/findall', [UserController::class, 'postFindAll']);        
-        $group->post('/find', [UserController::class, 'postFindById']);
-        $group->post('/create', [UserController::class, 'postCreate']);
-        $group->post('/update/{id}', [UserController::class, 'postUpdate']);
-        $group->post('/delete', [UserController::class, 'postDelete']);
+        $group->post('/findall', [UserController::class, 'findAll']);        
+        $group->post('/find', [UserController::class, 'find']);
+        $group->post('/create', [UserController::class, 'create']);
+        $group->post('/update/{id}', [UserController::class, 'update']);
+        $group->post('/delete', [UserController::class, 'delete']);
        
     });
     $app->group('/api/customer',function($group){
