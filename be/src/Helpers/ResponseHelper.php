@@ -9,12 +9,15 @@ class ResponseHelper {
     }
 
     public static function success(Response $response, string $message, array $data = [], int $statusCode = 200): Response {
-        return self::json($response, [
-            'success' => true,
-            'message' => $message,
-            'data' => $data
-        ], $statusCode);
+    $data = self::normalizeData($data);
+
+    return self::json($response, [
+        'success' => true,
+        'message' => $message,
+        'data'    => $data
+    ], $statusCode);
     }
+
 
     public static function error(Response $response, string $message, int $statusCode = 400): Response {
         return self::json($response, [
@@ -22,4 +25,16 @@ class ResponseHelper {
             'message' => $message
         ], $statusCode);
     }
+    private static function normalizeData($data) {
+    if (is_array($data)) {
+        return array_map([self::class, 'normalizeData'], $data);
+    }
+
+    if (is_object($data) && method_exists($data, 'toArrayFiltered')) {
+        return $data->toArrayFiltered();
+    }
+
+    return $data;
+}
+
 }

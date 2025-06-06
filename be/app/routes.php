@@ -13,13 +13,11 @@ return function (App $app) {
     $app->options('/{routes:.+}', function ($request, $response) {
         return $response;
     });
-    (require dirname(__DIR__) . '/src/Routes/AppRoutes.php')($app);
     
+    (require dirname(__DIR__) . '/src/Routes/AppRoutes.php')($app);  
+
     $app->get('/ping', function ($request, $response) {
     $response->getBody()->write('pong');
     return $response;
     });
-
-    
-
 };

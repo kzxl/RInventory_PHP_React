@@ -4,6 +4,7 @@ namespace App\Controllers\Users;
 use App\DTO\UserDTO;
 use App\Services\Users\UserService;
 use App\Helpers\ResponseHelper;
+use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 class UserController
@@ -12,31 +13,29 @@ class UserController
     public function __construct(UserService $userService){
         $this->userService = $userService;
     }
-    public function findAll(Request $request, Response $response, array $args): Response{
+    public function postFindAll(Request $request, Response $response, array $args): Response{
         $users = $this->userService->findAll();
         if(!$users){
             return ResponseHelper::error($response, 'Không tìm thấy user', 404);
         }
         return ResponseHelper::success($response, 'Lấy user thành công', [
-        'users'=> $users
+        'user' => $users
         ]);
     }
-    public function findById(Request $request, Response $response, array $args): Response {
-    $id = (int)$args['id'];
-    $user = $this->userService->findById($id);
+    public function postFindById(Request $request, Response $response, array $args): Response {
+    $params = $request->getParsedBody();
+    $user = UserDTO::fromArrayWithMap( $this->userService->findById($params['id']),['full_name'=>'name']);
 
     if (!$user) {
         return ResponseHelper::error($response, 'Không tìm thấy user', 404);
     }
 
     return ResponseHelper::success($response, 'Lấy user thành công', [
-        'id' => $user->id,
-        'name' => $user->name,
-        'email' => $user->email
+       'user'=> $user->toPublicArray()
     ]);
 }
 
-    public function create (Request $request, Response $response):Response {
+    public function postCreate (Request $request, Response $response):Response {
 
         $params = $request->getParsedBody();
         // Validate đơn giản
@@ -56,46 +55,20 @@ class UserController
         return ResponseHelper::error($response, 'Tạo user thất bại', 500);
     }
 
-         return ResponseHelper::success($response, 'Tạo user thành công', [
-        'id' => $newUser->id,
-        'name' => $newUser->name,
-        'email' => $newUser->email
-    ], 201);
+         return ResponseHelper::success($response, 'Tạo user thành công', [], 201);
     }
-    public function update(Request $request, Response $response, array $args): Response {
-    $id = (int) $args['id'];
+    public function postUpdate(Request $request, Response $response, array $args): Response {
+    try{
+    $id = (int)$args['id'];
     $params = $request->getParsedBody();
-
-    if (empty($params['full_name']) || !filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
-        return ResponseHelper::error($response, 'Dữ liệu không hợp lệ');
-    }
-
-    $existing = $this->userService->findById($id);
-    if (!$existing) {
-        return ResponseHelper::error($response, 'User không tồn tại', 404);
-    }
-
-    $updatedUser = new UserDTO(
-        $id,
-        $params['full_name'],
-        $params['email'],
-        $params['phone'],
-        $params['password_hash'] ?? $existing->password_hash,
-        $params['is_active'] ?? $existing->is_active
-    );
-
-    $result = $this->userService->update($updatedUser);
-    if (!$result) {
-        return ResponseHelper::error($response, 'Cập nhật thất bại', 500);
-    }
-
-    return ResponseHelper::success($response, 'Cập nhật thành công', [
-        'id' => $updatedUser->id,
-        'name' => $updatedUser->name,
-        'email' => $updatedUser->email
-    ]);
+    $result = $this->userService->update($id, $params);
+    return ResponseHelper::success($response, 'Cập nhật thành công', []);
+}catch(Exception $e){
+    return ResponseHelper::error($response, $e->getMessage(), 404);
 }
-    public function delete(Request $request, Response $response, array $args): Response {
+
+}
+    public function postDelete(Request $request, Response $response, array $args): Response {
         $id = (int) $args['id'];
 
         $user = $this->userService->findById($id);
