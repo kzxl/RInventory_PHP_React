@@ -16,7 +16,7 @@ const navItems = [
   { key: "/", icon: <DashboardOutlined />, label: "Tổng quan" },
   { key: "/customer", icon: <DashboardOutlined />, label: "Khách hàng" },
   { key: "/product", icon: <BoxPlotOutlined />, label: "Sản phẩm" },
-  { key: "/nha", icon: <ShoppingOutlined />, label: "Nhập kho" },
+  { key: "/user", icon: <ShoppingOutlined />, label: "Nhân viên" },
   { key: "/xuat-kho", icon: <ShoppingOutlined />, label: "Xuất kho" },
   { key: "/report", icon: <FileTextOutlined />, label: "Báo cáo" },
   { key: "/setting", icon: <SettingOutlined />, label: "Cài đặt" },

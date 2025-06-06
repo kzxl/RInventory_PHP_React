@@ -30,32 +30,30 @@ export default function RootLayout({ children }) {
   return (
     <html lang="vi">
       <body>
-        <Layout style={{height:"100hv"}}>  
-          <Sider
-              
+        <Layout style={{height:"100%"}}>  
+          <Sider     
+              width={300}         
               collapsed={collapsed}
               onCollapse={setCollapsed}
               breakpoint="lg"
-              collapsedWidth={screens.md ? 80 : 0}
-              
-              style={{ background: '#001529' }}
-              
+              collapsedWidth={screens.md ? 80 : 0}              
+              style={{ background: '#001529' }}              
             >
               <Sidebar collapsed={collapsed} />
             </Sider>
           <Layout>
-          <Header
-            style={{ padding: '0', background: '#fff'}}
+          <Header            style={{ padding: '0', background: '#fff'}}
           >
             <AppHeader collapsed={collapsed} onToggleSidebar={toggleCollapsed} />
-          </Header>
-            <Content  style={{   margin: '24px 16px 0'      }} >  
+          </Header>          
+            <Content style={{margin: '15px 10px 10px 10px'} } >  
             <div
             style={{
-              padding: 24,
+              
+              padding: 5,
               minHeight: 360,
               background: "#fff",
-              borderRadius: 30,
+              borderRadius: 10,
             }}
           >        
               {children}
@@ -65,6 +63,7 @@ export default function RootLayout({ children }) {
           Thanh Đồng Composite ©{new Date().getFullYear()}
         </Footer>
           </Layout>
+          
         </Layout>
       </body>
     </html>
