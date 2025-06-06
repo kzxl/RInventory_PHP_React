@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\Customer;
+namespace App\Controllers;
 
 use App\Controllers\BaseResourceController;
 use App\Services\Customer\CustomerService;

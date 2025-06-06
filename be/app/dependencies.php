@@ -64,8 +64,8 @@ return function (ContainerBuilder $containerBuilder) {
         
     ]);
     //Đăng ký
-    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Services', 'App\Service');
-    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Repositories', 'App\Repository');
-    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Controllers', 'App\Controller');
+    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Services', 'App\Services');
+    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Repositories', 'App\Repositories');
+    registerClassesFromFolder($containerBuilder, __DIR__ . '/../src/Controllers', 'App\Controllers');
 
 };

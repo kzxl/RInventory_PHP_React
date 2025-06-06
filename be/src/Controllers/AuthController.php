@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\Auth;
+namespace App\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Services\AuthService;

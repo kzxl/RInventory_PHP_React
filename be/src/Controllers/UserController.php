@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\Users;
+namespace App\Controllers;
 
 use App\DTO\UserDTO;
 use App\Services\Users\UserService;
